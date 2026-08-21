@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABSENSI SISWA X RPL</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    color:white;
+    background:
+    radial-gradient(circle at 10% 10%,#0066ff55,transparent 30%),
+    radial-gradient(circle at 90% 90%,#9b2cff55,transparent 30%),
+    #070a16;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.08;
+    background-image:
+    linear-gradient(#fff 1px,transparent 1px),
+    linear-gradient(90deg,#fff 1px,transparent 1px);
+    background-size:45px 45px;
+}
+
+.container{
+    width:92%;
+    max-width:900px;
+    margin:auto;
+    padding:25px 0 40px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    margin:auto;
+    border-radius:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    background:linear-gradient(135deg,#1769ff,#8b2cff);
+    box-shadow:0 0 35px #1769ff66;
+}
+
+.header h1{
+    margin-top:16px;
+    font-size:28px;
+}
+
+.header p{
+    margin-top:7px;
+    color:#8e98b5;
+}
+
+.card{
+    padding:22px;
+    margin-bottom:18px;
+    border-radius:20px;
+    background:#ffffff0d;
+    border:1px solid #ffffff18;
+    box-shadow:0 15px 45px #00000055;
+    backdrop-filter:blur(15px);
+}
+
+h2{
+    margin-bottom:18px;
+}
+
+input,
+select{
+    width:100%;
+    padding:14px;
+    margin:6px 0;
+    border-radius:11px;
+    border:1px solid #ffffff18;
+    outline:none;
+    background:#101528;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:9px;
+    border:0;
+    border-radius:11px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(135deg,#1769ff,#8128ff);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.gray{
+    background:#292e42;
+}
+
+.green{
+    background:linear-gradient(135deg,#00bd7c,#007ca5);
+}
+
+.info{
+    padding:14px;
+    margin:8px 0;
+    border-radius:12px;
+    background:#090d1c;
+    color:#cbd2e8;
+    line-height:1.8;
+}
+
+.success{
+    color:#32e99a;
+    font-weight:bold;
+}
+
+.error{
+    color:#ff6077;
+    font-weight:bold;
+}
+
+.blue{
+    color:#70a5ff;
+}
+
+.hidden{
+    display:none !important;
+}
+
+#qrcode{
+    width:max-content;
+    padding:12px;
+    margin:20px auto;
+    background:white;
+    border-radius:15px;
+}
+
+#reader{
+    width:100%;
+    max-width:450px;
+    margin:20px auto;
+    overflow:hidden;
+    border-radius:15px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,
+td{
+    padding:11px;
+    text-align:center;
+    border-bottom:1px solid #ffffff15;
+}
+
+th{
+    color:#83a9ff;
+    background:#11172d;
+}
+
+.hadir{
+    color:#35e99a;
+    font-weight:bold;
+}
+
+.empty{
+    color:#707993;
+    padding:25px;
+}
+
+.footer{
+    text-align:center;
+    color:#606983;
+    font-size:12px;
+    margin-top:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="logo">⚡</div>
+
+    <h1>ABSENSI SISWA X RPL</h1>
+
+    <p>Sistem Absensi Digital</p>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div id="loginPage" class="card">
+
+    <h2>🔐 MASUK</h2>
+
+    <select id="jenisLogin">
+
+        <option value="siswa">
+            Siswa
+        </option>
+
+        <option value="admin">
+            Admin
+        </option>
+
+    </select>
+
+
+    <!-- LOGIN SISWA -->
+
+    <div id="formSiswa">
+
+        <input
+            id="namaInput"
+            type="text"
+            placeholder="Masukkan nama lengkap"
+            autocomplete="off"
+        >
+
+        <button onclick="loginSiswa()">
+            👨‍🎓 MASUK SEBAGAI SISWA
+        </button>
+
+    </div>
+
+
+    <!-- LOGIN ADMIN -->
+
+    <div id="formAdmin" class="hidden">
+
+        <input
+            id="usernameAdmin"
+            type="text"
+            placeholder="Username admin"
+        >
+
+        <input
+            id="passwordAdmin"
+            type="password"
+            placeholder="Password admin"
+        >
+
+        <button onclick="loginAdmin()">
+            ⚙️ MASUK SEBAGAI ADMIN
+        </button>
+
+    </div>
+
+
+    <p id="pesanLogin"></p>
+
+</div>
+
+
+<!-- SISWA -->
+
+<div id="halamanSiswa" class="hidden">
+
+    <div class="card">
+
+        <h2>👨‍🎓 ABSENSI SISWA</h2>
+
+        <div class="info">
+
+            Nama:
+            <b id="tampilNama">-</b>
+
+            <br>
+
+            Kelas:
+            <b>X RPL</b>
+
+        </div>
+
+
+        <div class="info">
+
+            Status:
+            <b id="statusAbsen">
+                BELUM ABSEN
+            </b>
+
+        </div>
+
+
+        <button
+            id="btnScan"
+            onclick="mulaiScan()"
+        >
+
+            📷 SCAN QR ABSENSI
+
+        </button>
+
+
+        <div
+            id="reader"
+            class="hidden"
+        ></div>
+
+
+        <p
+            id="pesanScan"
+            style="margin-top:15px"
+        ></p>
+
+
+        <button
+            class="gray"
+            onclick="logout()"
+        >
+
+            KELUAR
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div id="halamanAdmin" class="hidden">
+
+    <div class="card">
+
+        <h2>⚙️ DASHBOARD ADMIN</h2>
+
+
+        <div class="info">
+
+            Tanggal:
+            <b id="tanggalAdmin">-</b>
+
+            <br>
+
+            Kelas:
+            <b>X RPL</b>
+
+        </div>
+
+
+        <button onclick="buatQR()">
+
+            🔳 BUAT QR ABSENSI HARI INI
+
+        </button>
+
+
+        <div
+            id="areaQR"
+            class="hidden"
+        >
+
+            <div id="qrcode"></div>
+
+
+            <div class="info">
+
+                📱 Tampilkan QR ini kepada siswa.
+
+                <br><br>
+
+                QR berlaku untuk hari ini.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DATA ABSENSI -->
+
+    <div class="card">
+
+        <h2>
+            📊 SISWA YANG SUDAH ABSEN
+        </h2>
+
+
+        <button
+            class="green"
+            onclick="tampilkanAbsensi()"
+        >
+
+            🔄 REFRESH
+
+        </button>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+
+                        <th>Nama</th>
+
+                        <th>Kelas</th>
+
+                        <th>Jam</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tabelAbsensi"></tbody>
+
+            </table>
+
+        </div>
+
+
+        <button
+            class="gray"
+            onclick="resetAbsensi()"
+        >
+
+            🗑️ RESET ABSENSI HARI INI
+
+        </button>
+
+
+        <button
+            class="gray"
+            onclick="logout()"
+        >
+
+            KELUAR ADMIN
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    ABSENSI SISWA X RPL
+
+    <br>
+
+    Digital Attendance System
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   ADMIN
+========================================= */
+
+var ADMIN_USER = "paizIT";
+
+var ADMIN_PASS = "paizpintarIT";
+
+
+/* =========================================
+   DATA SISWA SEMENTARA
+========================================= */
+
+var siswaSekarang = "";
+
+
+/* =========================================
+   TANGGAL
+========================================= */
+
+function tanggalHariIni(){
+
+    var d = new Date();
+
+    return d.getFullYear()
+    + "-"
+    + String(d.getMonth()+1).padStart(2,"0")
+    + "-"
+    + String(d.getDate()).padStart(2,"0");
+
+}
+
+
+/* =========================================
+   JAM
+========================================= */
+
+function jamSekarang(){
+
+    return new Date().toLocaleTimeString(
+        "id-ID",
+        {
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================
+   TOKEN QR HARIAN
+========================================= */
+
+function dapatkanQR(){
+
+    var tanggal =
+        tanggalHariIni();
+
+    var namaQR =
+        "QR_ABSEN_" + tanggal;
+
+    var qr =
+        localStorage.getItem(namaQR);
+
+
+    if(!qr){
+
+        qr =
+            "ABSEN_XRPL_"
+            + tanggal
+            + "_"
+            + Math.random()
+                .toString(36)
+                .substring(2,10)
+                .toUpperCase();
+
+
+        localStorage.setItem(
+            namaQR,
+            qr
+        );
+
+    }
+
+
+    return qr;
+
+}
+
+
+/* =========================================
+   PILIH JENIS LOGIN
+========================================= */
+
+document
+.getElementById("jenisLogin")
+.addEventListener(
+    "change",
+    function(){
+
+        var tipe = this.value;
+
+
+        if(tipe == "siswa"){
+
+            document
+            .getElementById("formSiswa")
+            .classList
+            .remove("hidden");
+
+
+            document
+            .getElementById("formAdmin")
+            .classList
+            .add("hidden");
+
+        }
+
+        else{
+
+            document
+            .getElementById("formSiswa")
+            .classList
+            .add("hidden");
+
+
+            document
+            .getElementById("formAdmin")
+            .classList
+            .remove("hidden");
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOGIN SISWA
+========================================= */
+
+function loginSiswa(){
+
+    var nama =
+        document
+        .getElementById("namaInput")
+        .value
+        .trim();
+
+
+    var pesan =
+        document
+        .getElementById("pesanLogin");
+
+
+    pesan.innerHTML = "";
+
+
+    if(nama == ""){
+
+        pesan.innerHTML =
+            '<br><span class="error">' +
+            'Silakan masukkan nama terlebih dahulu.' +
+            '</span>';
+
+        return;
+
+    }
+
+
+    /* CEK APAKAH NAMA SUDAH ABSEN */
+
+    var data =
+        JSON.parse(
+            localStorage.getItem(
+                "ABSEN_" + tanggalHariIni()
+            ) || "[]"
+        );
+
+
+    var sudah =
+        data.find(function(x){
+
+            return x.nama.toLowerCase()
+                == nama.toLowerCase();
+
+        });
+
+
+    if(sudah){
+
+        pesan.innerHTML =
+            '<br><span class="error">' +
+            '❌ Nama tersebut sudah melakukan absensi hari ini.' +
+            '<br><br>' +
+            'Jam: ' + sudah.jam +
+            '</span>';
+
+        return;
+
+    }
+
+
+    siswaSekarang = nama;
+
+
+    document
+    .getElementById("tampilNama")
+    .innerText = nama;
+
+
+    document
+    .getElementById("statusAbsen")
+    .innerText = "BELUM ABSEN";
+
+
+    document
+    .getElementById("loginPage")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("halamanSiswa")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* =========================================
+   LOGIN ADMIN
+========================================= */
+
+function loginAdmin(){
+
+    var username =
+        document
+        .getElementById("usernameAdmin")
+        .value
+        .trim();
+
+
+    var password =
+        document
+        .getElementById("passwordAdmin")
+        .value;
+
+
+    var pesan =
+        document
+        .getElementById("pesanLogin");
+
+
+    if(
+        username == ADMIN_USER &&
+        password == ADMIN_PASS
+    ){
+
+        document
+        .getElementById("loginPage")
+        .classList
+        .add("hidden");
+
+
+        document
+        .getElementById("halamanAdmin")
+        .classList
+        .remove("hidden");
+
+
+        document
+        .getElementById("tanggalAdmin")
+        .innerText =
+            tanggalHariIni();
+
+
+        tampilkanAbsensi();
+
+    }
+
+    else{
+
+        pesan.innerHTML =
+            '<br><span class="error">' +
+            '❌ Username atau password admin salah.' +
+            '</span>';
+
+    }
+
+}
+
+
+/* =========================================
+   BUAT QR
+========================================= */
+
+function buatQR(){
+
+    var area =
+        document
+        .getElementById("areaQR");
+
+
+    area.classList.remove("hidden");
+
+
+    document
+        .getElementById("qrcode")
+        .innerHTML = "";
+
+
+    new QRCode(
+
+        document.getElementById("qrcode"),
+
+        {
+            text:dapatkanQR(),
+
+            width:260,
+
+            height:260,
+
+            correctLevel:
+                QRCode.CorrectLevel.H
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   SCANNER
+========================================= */
+
+var scanner = null;
+
+
+function mulaiScan(){
+
+    var reader =
+        document
+        .getElementById("reader");
+
+
+    reader
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("pesanScan")
+        .innerHTML =
+        '<span class="blue">' +
+        '📷 Arahkan kamera ke QR admin.' +
+        '</span>';
+
+
+    scanner =
+        new Html5Qrcode("reader");
+
+
+    scanner.start(
+
+        {
+            facingMode:"environment"
+        },
+
+        {
+            fps:10,
+
+            qrbox:250
+        },
+
+        function(teks){
+
+            prosesScan(teks);
+
+        },
+
+        function(){}
+
+    )
+    .catch(function(){
+
+        document
+        .getElementById("pesanScan")
+        .innerHTML =
+        '<span class="error">' +
+        '❌ Kamera tidak dapat dibuka. ' +
+        'Izinkan akses kamera.' +
+        '</span>';
+
+    });
+
+}
+
+
+/* =========================================
+   PROSES SCAN
+========================================= */
+
+function prosesScan(teks){
+
+    if(teks != dapatkanQR()){
+
+        document
+        .getElementById("pesanScan")
+        .innerHTML =
+        '<span class="error">' +
+        '❌ QR tidak valid.' +
+        '</span>';
+
+        return;
+
+    }
+
+
+    var nama =
+        siswaSekarang;
+
+
+    if(nama == ""){
+
+        return;
+
+    }
+
+
+    var tanggal =
+        tanggalHariIni();
+
+
+    var data =
+        JSON.parse(
+            localStorage.getItem(
+                "ABSEN_" + tanggal
+            ) || "[]"
+        );
+
+
+    /* CEK NAMA */
+
+    var sudah =
+        data.find(function(x){
+
+            return x.nama.toLowerCase()
+                == nama.toLowerCase();
+
+        });
+
+
+    if(sudah){
+
+        hentikanScanner();
+
+        return;
+
+    }
+
+
+    /* SIMPAN ABSENSI */
+
+    var dataBaru = {
+
+        nama:nama,
+
+        kelas:"X RPL",
+
+        jam:jamSekarang(),
+
+        tanggal:tanggal
+
+    };
+
+
+    data.push(dataBaru);
+
+
+    localStorage.setItem(
+
+        "ABSEN_" + tanggal,
+
+        JSON.stringify(data)
+
+    );
+
+
+    document
+    .getElementById("statusAbsen")
+    .innerHTML =
+        '<span class="success">' +
+        '✅ SUDAH ABSEN' +
+        '<br>' +
+        'Jam: ' + dataBaru.jam +
+        '</span>';
+
+
+    document
+    .getElementById("pesanScan")
+    .innerHTML =
+        '<span class="success">' +
+        '🎉 ABSENSI BERHASIL!' +
+        '</span>';
+
+
+    hentikanScanner();
+
+
+    /*
+       KELUAR OTOMATIS
+       setelah 2 detik
+    */
+
+    setTimeout(function(){
+
+        logout();
+
+
+        document
+        .getElementById("pesanLogin")
+        .innerHTML =
+            '<br><span class="success">' +
+            '✅ Absensi berhasil dicatat. ' +
+            'Kamu sudah tidak dapat absen lagi hari ini.' +
+            '</span>';
+
+    },2000);
+
+}
+
+
+/* =========================================
+   HENTIKAN KAMERA
+========================================= */
+
+function hentikanScanner(){
+
+    if(scanner){
+
+        scanner.stop()
+        .then(function(){
+
+            scanner.clear();
+
+
+            document
+            .getElementById("reader")
+            .classList
+            .add("hidden");
+
+
+            scanner = null;
+
+        })
+        .catch(function(){});
+
+    }
+
+}
+
+
+/* =========================================
+   TABEL ADMIN
+========================================= */
+
+function tampilkanAbsensi(){
+
+    var data =
+        JSON.parse(
+            localStorage.getItem(
+                "ABSEN_" + tanggalHariIni()
+            ) || "[]"
+        );
+
+
+    var tabel =
+        document
+        .getElementById("tabelAbsensi");
+
+
+    tabel.innerHTML = "";
+
+
+    /*
+       JIKA BELUM ADA
+       YANG ABSEN
+    */
+
+    if(data.length == 0){
+
+        tabel.innerHTML =
+            '<tr>' +
+            '<td colspan="5" class="empty">' +
+            'Belum ada siswa yang absen.' +
+            '</td>' +
+            '</tr>';
+
+        return;
+
+    }
+
+
+    /*
+       TAMPILKAN HANYA
+       YANG SUDAH ABSEN
+    */
+
+    data.forEach(function(x,i){
+
+        tabel.innerHTML +=
+
+            '<tr>' +
+
+            '<td>' +
+            (i + 1) +
+            '</td>' +
+
+            '<td>' +
+            x.nama +
+            '</td>' +
+
+            '<td>' +
+            x.kelas +
+            '</td>' +
+
+            '<td>' +
+            x.jam +
+            '</td>' +
+
+            '<td>' +
+            '<span class="hadir">' +
+            'HADIR' +
+            '</span>' +
+            '</td>' +
+
+            '</tr>';
+
+    });
+
+}
+
+
+/* =========================================
+   RESET ABSENSI
+========================================= */
+
+function resetAbsensi(){
+
+    var yakin =
+        confirm(
+            "Hapus semua absensi hari ini?"
+        );
+
+
+    if(!yakin){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        "ABSEN_" + tanggalHariIni()
+    );
+
+
+    tampilkanAbsensi();
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout(){
+
+    hentikanScanner();
+
+
+    siswaSekarang = "";
+
+
+    document
+    .getElementById("halamanSiswa")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("halamanAdmin")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("loginPage")
+    .classList
+    .remove("hidden");
+
+
+    document
+    .getElementById("namaInput")
+    .value = "";
+
+
+    document
+    .getElementById("usernameAdmin")
+    .value = "";
+
+
+    document
+    .getElementById("passwordAdmin")
+    .value = "";
+
+}
+
+
+/* =========================================
+   UPDATE TANGGAL ADMIN
+========================================= */
+
+setInterval(function(){
+
+    var admin =
+        document
+        .getElementById("halamanAdmin");
+
+
+    if(
+        !admin
+        .classList
+        .contains("hidden")
+    ){
+
+        document
+        .getElementById("tanggalAdmin")
+        .innerText =
+            tanggalHariIni();
+
+    }
+
+},1000);
+
+</script>
+
+</body>
+</html>
